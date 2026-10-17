@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Craving — Sistemas de IA de alto nivel</title>
+    <meta name="description" content="Los sistemas de inteligencia artificial que unos pocos ya están usando para generar ventaja real.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0A0A0A;
+            --black-soft: #111111;
+            --gold: #C9A84C;
+            --gold-soft: #D4B96A;
+            --purple: #2A1B3D;
+            --purple-light: #3D2A55;
+            --offwhite: #F5F2EB;
+            --offwhite-dim: #C8C4B8;
+            --accent: #8B1E3F;
+            --border: rgba(201, 168, 76, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--offwhite);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--gold);
+        }
+
+        .logo-mark {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            color: var(--gold);
+        }
+
+        .logo-text span {
+            font-weight: 400;
+            opacity: 0.85;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--offwhite-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            position: relative;
+            background: 
+                radial-gradient(ellipse at 50% 0%, rgba(42, 27, 61, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 30, 63, 0.08) 0%, transparent 50%),
+                var(--black);
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+            line-height: 1.15;
+            max-width: 900px;
+            margin-bottom: 1.8rem;
+            color: var(--offwhite);
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            max-width: 620px;
+            color: var(--offwhite-dim);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2.8rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .hero-note {
+            margin-top: 1.8rem;
+            font-size: 0.8rem;
+            color: var(--offwhite-dim);
+            letter-spacing: 0.04em;
+            opacity: 0.7;
+        }
+
+        /* Divider */
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 0 auto 4rem;
+            opacity: 0.4;
+        }
+
+        /* Sections */
+        section {
+            padding: 7rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 1.5rem;
+            color: var(--offwhite);
+        }
+
+        .section-intro {
+            max-width: 560px;
+            color: var(--offwhite-dim);
+            margin-bottom: 4rem;
+            font-size: 1.05rem;
+        }
+
+        /* Systems Grid */
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .system-card {
+            background: var(--black-soft);
+            border: 1px solid var(--border);
+            padding: 2.2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 0;
+            background: var(--gold);
+            transition: height 0.4s ease;
+        }
+
+        .system-card:hover {
+            border-color: rgba(201, 168, 76, 0.35);
+            transform: translateY(-3px);
+        }
+
+        .system-card:hover::before {
+            height: 100%;
+        }
+
+        .card-level {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            opacity: 0.85;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            margin-bottom: 1rem;
+            color: var(--offwhite);
+            font-weight: 500;
+        }
+
+        .card-desire {
+            font-size: 0.95rem;
+            color: var(--offwhite-dim);
+            margin-bottom: 1.5rem;
+            line-height: 1.65;
+            font-style: italic;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--offwhite-dim);
+            opacity: 0.7;
+            letter-spacing: 0.04em;
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* How it works */
+        .how-section {
+            background: linear-gradient(to bottom, transparent, rgba(42, 27, 61, 0.15), transparent);
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .how-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .how-text {
+            font-size: 1.2rem;
+            line-height: 1.85;
+            color: var(--offwhite-dim);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
+
+        .how-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .how-text strong {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            text-align: center;
+            padding: 8rem 2rem;
+            background: 
+                radial-gradient(ellipse at 50% 100%, rgba(42, 27, 61, 0.3) 0%, transparent 60%);
+        }
+
+        .newsletter-box {
+            max-width: 520px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            padding: 3.5rem 2.5rem;
+            background: var(--black-soft);
+        }
+
+        .newsletter h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            color: var(--offwhite-dim);
+            margin-bottom: 2.2rem;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            background: var(--black);
+            border: 1px solid var(--border);
+            padding: 1rem 1.2rem;
+            color: var(--offwhite);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-form input::placeholder {
+            color: var(--offwhite-dim);
+            opacity: 0.6;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--gold);
+        }
+
+        .newsletter-form button {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 1rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--gold-soft);
+        }
+
+        .form-note {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            color: var(--offwhite-dim);
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .footer-logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--offwhite-dim);
+            opacity: 0.6;
+            letter-spacing: 0.03em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 4rem;
+            }
+
+            .systems-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .system-card {
+                padding: 1.8rem;
+            }
+
+            section {
+                padding: 5rem 1.5rem;
+            }
+
+            .newsletter-box {
+                padding: 2.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">
+            <svg class="logo-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer thin ring -->
+                <circle cx="32" cy="32" r="30" stroke="#C9A84C" stroke-width="1.2" opacity="0.9"/>
+                <!-- Inner elegant ring -->
+                <circle cx="32" cy="32" r="24" stroke="#C9A84C" stroke-width="0.6" opacity="0.5"/>
+                <!-- Monogram A -->
+                <path d="M22 42 L32 18 L42 42" stroke="#C9A84C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M26.5 34 H37.5" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+                <!-- Small diamond accent -->
+                <path d="M32 46 L34 49 L32 52 L30 49 Z" fill="#C9A84C" opacity="0.9"/>
+            </svg>
+            <div class="logo-text">AGENT <span>CRAVING</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#sistemas">Sistemas</a></li>
+            <li><a href="#como-funciona">Cómo funciona</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <span class="hero-label">Acceso selectivo</span>
+        <h1>Los sistemas de inteligencia artificial que unos pocos ya están usando para generar <span>ventaja real</span>.</h1>
+        <p class="hero-sub">Mientras la mayoría sigue probando herramientas, un grupo reducido opera con agentes y sistemas que les están dando resultados concretos. Aquí están.</p>
+        <a href="#sistemas" class="btn-primary">Explorar los sistemas</a>
+        <p class="hero-note">Acceso abierto. Ventaja no.</p>
+    </header>
+
+    <!-- Systems -->
+    <section id="sistemas">
+        <span class="section-label">Colección actual</span>
+        <h2 class="section-title">Sistemas seleccionados</h2>
+        <p class="section-intro">Solo incluimos aquellos que generan una clara separación entre quien los usa y quien no.</p>
+
+        <div class="systems-grid">
+            <!-- Card 1 -->
+            <article class="system-card">
+                <div class="card-level">Alto impacto</div>
+                <h3 class="card-title">Agente de Prospección Autónoma</h3>
+                <p class="card-desire">Mientras otros buscan clientes manualmente, este sistema los encuentra, califica y contacta por ti.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Media</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="system-card">
+                <div class="card-level">Ventaja clara</div>
+                <h3 class="card-title">Sistema de Contenido Fantasma</h3>
+                <p class="card-desire">Publica contenido de alto nivel de forma constante sin que tengas que escribir casi nada.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Baja-Media</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="system-card">
+                <div class="card-level">Ventaja estratégica</div>
+                <h3 class="card-title">Agente de Investigación de Mercado</h3>
+                <p class="card-desire">Detecta tendencias y oportunidades antes de que se vuelvan obvias para el resto.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Media</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="system-card">
+                <div class="card-level">Alto impacto</div>
+                <h3 class="card-title">Asistente de Cierre de Ventas</h3>
+                <p class="card-desire">Sabe qué responder en cada momento para aumentar la probabilidad de cierre.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Baja</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+
+            <!-- Card 5 -->
+            <article class="system-card">
+                <div class="card-level">Apalancamiento</div>
+                <h3 class="card-title">Newsletter Autogestionada</h3>
+                <p class="card-desire">Investiga, escribe y programa newsletters con mínima intervención tuya.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Media</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+
+            <!-- Card 6 -->
+            <article class="system-card">
+                <div class="card-level">Largo plazo</div>
+                <h3 class="card-title">Personal Branding Silencioso</h3>
+                <p class="card-desire">Construye y mantiene una presencia digital consistente y de alto nivel sin esfuerzo diario.</p>
+                <div class="card-meta">
+                    <span>Complejidad: Baja-Media</span>
+                    <span>Multilingüe</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section" id="como-funciona">
+        <div class="how-inner">
+            <span class="section-label">Filosofía</span>
+            <h2 class="section-title">Cómo funciona Agent Craving</h2>
+            <div class="divider"></div>
+            <div class="how-text">
+                <p>Agent Craving no pretende ser el directorio más grande.<br>Pretende ser el más <strong>selectivo</strong>.</p>
+                <p>Solo incluimos sistemas que generan una clara separación entre quien los usa y quien no. Cada uno ha sido evaluado por su capacidad real de producir resultados y por el nivel de deseo que despierta.</p>
+                <p>El acceso es abierto.<br>La ventaja, no.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" id="newsletter">
+        <div class="newsletter-box">
+            <span class="section-label">Craving Weekly</span>
+            <h2>Recibe los sistemas antes que el resto</h2>
+            <p>Una vez por semana. Solo lo que genera ventaja real. Sin ruido.</p>
+            
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Gracias. Te avisaremos cuando lancemos la primera edición.');">
+                <input type="email" placeholder="Tu mejor email" required>
+                <button type="submit">Solicitar acceso</button>
+            </form>
+            <p class="form-note">Sin spam. Cancela cuando quieras.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="30" stroke="#C9A84C" stroke-width="1.2" opacity="0.9"/>
+                <circle cx="32" cy="32" r="24" stroke="#C9A84C" stroke-width="0.6" opacity="0.5"/>
+                <path d="M22 42 L32 18 L42 42" stroke="#C9A84C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <path d="M26.5 34 H37.5" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M32 46 L34 49 L32 52 L30 49 Z" fill="#C9A84C" opacity="0.9"/>
+            </svg>
+            <span class="footer-logo-text">AGENT CRAVING</span>
+        </div>
+        <p class="footer-text">© 2026 Agent Craving. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
